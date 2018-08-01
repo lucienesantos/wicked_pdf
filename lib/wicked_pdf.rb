@@ -46,7 +46,7 @@ class WickedPdf
   end
 
   def pdf_from_html_file(filepath, options = {})
-    pdf_from_url("file:///#{filepath}", options)
+     pdf_from_url("file:///#{filepath}", options)
   end
 
   def pdf_from_string(string, options = {})
@@ -109,6 +109,10 @@ class WickedPdf
   end
 
   def retrieve_binary_version
+    if (WickedPdf.config[:node_version])
+      @binary_version = "0.0.1"
+      return
+    end
     _stdin, stdout, _stderr = Open3.popen3(@exe_path + ' -V')
     @binary_version = parse_version(stdout.gets(nil))
   rescue StandardError
