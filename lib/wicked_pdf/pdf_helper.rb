@@ -38,9 +38,9 @@ class WickedPdf
       if options.is_a?(Hash) && options.key?(:pdf)
         options[:basic_auth] = set_basic_auth(options)
         make_and_send_pdf(options.delete(:pdf), (WickedPdf.config || {}).merge(options))
-      # elsif respond_to?(:render_without_wicked_pdf)
-      #   # support alias_method_chain (module included)
-      #   render_without_wicked_pdf(options, *args, &block)
+      elsif respond_to?(:render_without_wicked_pdf)
+        # support alias_method_chain (module included)
+        render_without_wicked_pdf(options, *args, &block)
       else
         # support inheritance (module prepended)
         method(:render).super_method.call(options, *args, &block)
@@ -52,9 +52,9 @@ class WickedPdf
         options[:basic_auth] = set_basic_auth(options)
         options.delete :pdf
         make_pdf((WickedPdf.config || {}).merge(options))
-      # elsif respond_to?(:render_to_string_without_wicked_pdf)
-      #   # support alias_method_chain (module included)
-      #   render_to_string_without_wicked_pdf(options, *args, &block)
+      elsif respond_to?(:render_to_string_without_wicked_pdf)
+        # support alias_method_chain (module included)
+        render_to_string_without_wicked_pdf(options, *args, &block)
       else
         # support inheritance (module prepended)
         method(:render_to_string).super_method.call(options, *args, &block)
